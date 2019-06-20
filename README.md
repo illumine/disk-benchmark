@@ -276,6 +276,6 @@ Built and tested with `gcc version 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC)`
 Windows: It compiles and run under Ming/gcc but dos not print results. Does not work.
 
 ## Author
-Michael Mountrakis mountrakis.AT.illumine.gr
+Michael Mountrakis mountrakis.AT.illumineit.com
 
 April 2016
