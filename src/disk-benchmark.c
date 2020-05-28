@@ -8,7 +8,7 @@ Build :
  # gcc disk-benchmark.c -o disk-benchmark  -l pthread -O3  -Wall
  
 Author: 
-    Michael Mountrakis mountrakis@illumine.gr
+    Michael Mountrakis mountrakis@illumineit.com
 **************************************************************************/
 
 #include <stdio.h> 
@@ -108,7 +108,7 @@ void usage( char * progname){
     printf("\n Prints information around system I/O. Use this info to set R/W buffer size for your tests with -b option."); 
     printf("\n Writing to a file in smaller chunks may cause an inefficient read-modify-rewrite.");
     printf("\n Returns 0 on OK , 1 on Error.");
-    printf("\n Author: Michael Mountrakis 2016 - mountrakis@illumine.gr");
+    printf("\n Author: Michael Mountrakis 2016 - mountrakis@illumineit.com");
     print_version();
     printf("\n");
 }
