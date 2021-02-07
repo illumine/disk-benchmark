@@ -1,16 +1,13 @@
 /***********************************************************************
 Filename : disk-benchmark.c           
-
 Description :
     A tool to test and benchmark storage (SAN, SCSI, NAS, Local, SSDs) 
-
 Build :
  # gcc disk-benchmark.c -o disk-benchmark  -l pthread -O3  -Wall
  
 Author: 
-    Michael Mountrakis mountrakis@illumineit.com
+    Michael Mountrakis mike.mountrakis@gmail.com
 **************************************************************************/
-
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <string.h> 
@@ -31,11 +28,12 @@ Author:
 
 #define ER_EXIT 1
 
-#define VERSION "v1.1"
-#define BUILD_DATE "15/4/2016"
+#define VERSION "v2.0"
+#define BUILD_DATE "7/2/2021"
 
 /* We define this as a macro since we need to have it inline for making calculation faster from a function*/
 #define TDIFF(tstart,tend)  (((tend.tv_sec) + (1.0e-9)*(tend.tv_nsec)) - ((tstart.tv_sec) + (1.0e-9)*(tstart.tv_nsec)))
+
 
 
 typedef struct ThreadWork_t{
@@ -108,7 +106,7 @@ void usage( char * progname){
     printf("\n Prints information around system I/O. Use this info to set R/W buffer size for your tests with -b option."); 
     printf("\n Writing to a file in smaller chunks may cause an inefficient read-modify-rewrite.");
     printf("\n Returns 0 on OK , 1 on Error.");
-    printf("\n Author: Michael Mountrakis 2016 - mountrakis@illumineit.com");
+    printf("\n Author: Michael Mountrakis 2021 - mike.mountrakis@gmail.com");
     print_version();
     printf("\n");
 }
@@ -177,6 +175,7 @@ void copy_thread_work(ThreadWork_t * from, ThreadWork_t *to, int id ){
 /* Show what has been done, results */
 void debug_thread_results(ThreadWork_t * thread_work){
     if( !thread_work->values_only )
+#ifdef __linux__    
         printf("\nT=%d, Avg W=%Lf Avg R=%Lf Total W=%Lf Total R=%Lf Total Time=%Lf Sleep=%Lf  Avg File Size =%Lf",
             thread_work->tid,
             thread_work->avg_file_w,
@@ -185,7 +184,19 @@ void debug_thread_results(ThreadWork_t * thread_work){
             thread_work->total_file_r,
             thread_work->total_file_w + thread_work->total_file_r,
             thread_work->sleep_for_sec,
-            thread_work->avg_file_siz);
+            thread_work->avg_file_siz);         
+#else    
+/*  Windows long double issue. See https://stackoverflow.com/questions/19952200/scanf-printf-double-variable-c  */
+        printf("\nT=%d, Avg W=%f Avg R=%f Total W=%f Total R=%f Total Time=%f Sleep=%f  Avg File Size =%f",
+            thread_work->tid,
+           (double) thread_work->avg_file_w,
+           (double) thread_work->avg_file_r,
+           (double) thread_work->total_file_w,
+           (double) thread_work->total_file_r,
+           (double) (thread_work->total_file_w + thread_work->total_file_r),
+           (double) thread_work->sleep_for_sec,
+           (double) thread_work->avg_file_siz);
+#endif           
     else
          printf("\n%d\t%Lf\t%Lf\t%Lf\t%Lf\t%Lf\t%Lf\t%Lf",
             thread_work->tid,
@@ -385,7 +396,7 @@ void write_file( const char * path, size_t file_size, size_t buffer_siz ){
   int i, times = file_size / buffer_siz + 1 ;
   char * data = (char *)calloc( buffer_siz, sizeof(char) );
   size_t bytes = 0;
-    
+  
     fd = open(path, O_WRONLY | O_CREAT , 0644);
     if( fd < 0 ){
         sprintf(msg,"\nError opening file %s for writing.", path);
@@ -393,7 +404,7 @@ void write_file( const char * path, size_t file_size, size_t buffer_siz ){
         return;
     }else {
         ;
-        //printf("nfile %s opened for writing.",path);
+        /* printf("nfile %s opened for writing.",path);  */
     }
  	
     for (i = 0;i < times; i++){
@@ -417,7 +428,7 @@ void read_file( const char * path, size_t buffer_siz ){
     }
     else{
         ;
-        //printf("nfile %s opened for reading.",path);
+        /* printf("nfile %s opened for reading.",path);  */
     }
     while (read(fd, data, buffer_siz) > 0 ){
         times_read++;
@@ -434,8 +445,10 @@ void * do_benchmark(void *tw){
   unsigned int sleep_sec=0;
   struct timespec tstart, tend;
   
-  //printf("\nThread #%d!", work->tid);
-  //debug_thread_work(work);
+  /* 
+    printf("\nThread #%d!", work->tid);
+    debug_thread_work(work);
+  */
    
    for(i=0; i<work->repeats; i++ ){
 #ifdef  __linux__   
@@ -536,11 +549,11 @@ int main(int argc, char *argv[]){
         exit(ER_EXIT);
     }
  
-    //if work continously, just block in the loop waiting for user to interrupt with Cntr-C
+    /* if work continously, just block in the loop waiting for user to interrupt with Cntr-C */
     if( thread_work.work_continously){
         while(1){
-            threads = calloc( thread_work.threads, sizeof(pthread_t) );
-            threads_work = calloc( thread_work.threads, sizeof(ThreadWork_t) );
+            threads =  (pthread_t*)calloc( thread_work.threads, sizeof(pthread_t) );
+            threads_work =  (ThreadWork_t*)calloc( thread_work.threads, sizeof(ThreadWork_t) );
             for(t=0; t<thread_work.threads; t++) {
                 copy_thread_work(&thread_work, &threads_work[t], t );
                 rc = pthread_create( &threads[t], NULL, do_benchmark, (void *) &threads_work[t] );
@@ -561,8 +574,8 @@ int main(int argc, char *argv[]){
     /* Start Wall and CPU clocks and fire threads */
     start_time = time(NULL);
     start_clock = clock();
-    threads = calloc( thread_work.threads, sizeof(pthread_t) );
-    threads_work = calloc( thread_work.threads, sizeof(ThreadWork_t) );
+    threads = (pthread_t*)calloc( thread_work.threads, sizeof(pthread_t) );
+    threads_work = (ThreadWork_t *)calloc( thread_work.threads, sizeof(ThreadWork_t) );
     for(t=0; t<thread_work.threads; t++) {
         copy_thread_work(&thread_work, &threads_work[t], t );
         rc = pthread_create( &threads[t], NULL, do_benchmark, (void *) &threads_work[t] );

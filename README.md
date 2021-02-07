@@ -1,7 +1,27 @@
 # disk-benchmark
-A Benchmark program to test Hard Drives, SSD Drives, HBAs, RAID Adapters &amp; Storage Controllers
+A Benchmark and Simulation program to test Hard Drives, SSD Drives, HBAs, RAID Adapters &amp; Storage Controllers
 
 Works for any Linux, POSIX or even MS DOs or Windows system as long as there is a C compiler!
+
+With a single command line tool, you can evaluate the disk performance of you application scenario!
+
+Benefit from this extremely simple tool by:
+- Doing a simple benchmark test on you hard drive
+- Monitor QoS of your cloud drive by constantly calclulating average performance summaries 
+- Measure the disk performance of complex applications by doing a precise Read/Write simulation with multiple threads
+- Create disk usage scenarios
+- Monitor performance of disk replication.
+- Monitor swap of active/passive disk RAIDS
+.... all those from a simple opensource application of 650 lines of basic and very simple C code!
+
+
+[Download it here](https://github.com/illumine/disk-benchmark/blob/master/bin/disk-benchmark.zip)
+```
+Size:	100,975
+	CRC-32:	7D9F5FB6
+	MD-5:	f6bcf6c2c387ade6a8287f806877d24f
+```
+
 
 ## Synopsis
 
@@ -49,8 +69,8 @@ Run it without arguments to get the option lists:
  Prints information around system I/O. Use this info to set R/W buffer size for your tests with -b option.
  Writing to a file in smaller chunks may cause an inefficient read-modify-rewrite.
  Returns 0 on OK , 1 on Error.
- Author: Michael Mountrakis 2016 - mountrakis@illumine.gr
-Version v1.1  built on 15/4/2016
+ Author: Michael Mountrakis 2021 - mike.mountrakis[AT]gmail.com
+Version v1.1  built on 7/2/2021
 
 </pre>
  
@@ -153,7 +173,7 @@ Commands like this will kill your system in seconds especially when run as root.
 
 ## Test Cases
 
-### Test native Monsoon 2.0 ESX volumes:
+### Test native Monsoon 2.0 Cloud ESX volumes:
 Lets pick the / partition of a Monsoon 2.0 image:
 <pre>
  # df -h
@@ -226,7 +246,7 @@ Summaries - Averages all threadssAvg W=0.023361 Avg R=0.095913 Total W=0.467228 
 Wall time 4.000000, CPU time 5.100000
 </pre>
 
-### Test GlusterFSS
+### Test GlusterFS replicated partitions
 This test will be done to a replicated GlusterFS file system that is mounted from a remote device.
 <pre>
 ha-ma-rot1 root@mo-0bcd54f94:~ # gluster volume inf
@@ -260,6 +280,8 @@ Wall time 42.000000, CPU time 5.5100
 </pre>
 
 ## How to build
+
+### Linux systems
 You need  `gcc`, the GNU C Compiler 
 
 You do:
@@ -275,24 +297,47 @@ Depends only on POSIX Threads library
 
 Built and tested with `gcc version 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC)`
 
-### Windows
+### Windows - build with DDM-GCC
 
 You can download Bloodshed DEV C++ tool from https://sourceforge.net/projects/orwelldevcpp/
 
-This is a new and improved fork of Bloodshed Dev-C++ IDE with build in compiler TDM-GCC 4.9.2 32/64bit that offers very cool features.
 
-You can compile it by opening manu `Execute --> `
-
+This is a new and improved fork of Bloodshed Dev-C++ IDE with build in compiler TDM-GCC 4.9.2 32/64bit (very old) that offers very cool features.
 
 
+Then, download the latest TDM-GCC compiler from https://jmeubank.github.io/tdm-gcc/download/ 
 
 
-a marvelous IDE with build-in Ming
+Install the latest TDM-GCC compiler inside the directory of Dev-C++ , for me it is `C:\Program Files (x86)\Dev-Cpp\TDM-GCC`
 
 
+Install the newest TDM-GCC compiler in  Bloodshed DEV C++  by navigating to `Tools --> Compiler Options --> Select + Add compiler set by folder`
+like the following picture shows:
+
+![](img/add-tdm-gcc.png "")
+
+Restart the  Bloodshed DEV C++ for changes to take effect, create a new project 
+
+![](img/new-project.png "")
+
+and add [the source file to it](src/disk-benchmark.c)
+
+
+You can compile it by opening manu `Execute --> Rebuild All`
+
+If you want to use only the binaries, I have prepared the 64-bit version of it here
+
+[Download it here](https://github.com/illumine/disk-benchmark/blob/master/bin/disk-benchmark.zip)
+```
+Size:	100,975
+	CRC-32:	7D9F5FB6
+	MD-5:	f6bcf6c2c387ade6a8287f806877d24f
+```
 
 ## Author
 Michael Mountrakis mountrakis.AT.gmail.com
 
-April 2016
-Windows Compilation 2021
+Version 1  - linux only - April 2021
+
+
+Version 2  - Linux and Windows  - February 2021
