@@ -1,6 +1,8 @@
 # disk-benchmark
 A Benchmark program to test Hard Drives, SSD Drives, HBAs, RAID Adapters &amp; Storage Controllers
 
+Works for any Linux, POSIX or even MS DOs or Windows system as long as there is a C compiler!
+
 ## Synopsis
 
 Use this Benchmark program to test any disk  physical or virtual, local or remote. This is a very light C program with the following features:
@@ -225,7 +227,7 @@ Wall time 4.000000, CPU time 5.100000
 </pre>
 
 ### Test GlusterFSS
-This test will be done to a replicated GLusterFS file system that is mounted from a remote device.
+This test will be done to a replicated GlusterFS file system that is mounted from a remote device.
 <pre>
 ha-ma-rot1 root@mo-0bcd54f94:~ # gluster volume inf
 
@@ -257,7 +259,7 @@ Avg W=1.742522 Avg R=0.293959 Total W=34.850432 Total R=5.879178 Total Time=40.7
 Wall time 42.000000, CPU time 5.5100
 </pre>
 
-## How to builtd
+## How to build
 You need  `gcc`, the GNU C Compiler 
 
 You do:
@@ -273,9 +275,24 @@ Depends only on POSIX Threads library
 
 Built and tested with `gcc version 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC)`
 
-Windows: It compiles and run under Ming/gcc but dos not print results. Does not work.
+### Windows
+
+You can download Bloodshed DEV C++ tool from https://sourceforge.net/projects/orwelldevcpp/
+
+This is a new and improved fork of Bloodshed Dev-C++ IDE with build in compiler TDM-GCC 4.9.2 32/64bit that offers very cool features.
+
+You can compile it by opening manu `Execute --> `
+
+
+
+
+
+a marvelous IDE with build-in Ming
+
+
 
 ## Author
-Michael Mountrakis mountrakis.AT.illumineit.com
+Michael Mountrakis mountrakis.AT.gmail.com
 
 April 2016
+Windows Compilation 2021
