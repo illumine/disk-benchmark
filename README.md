@@ -1,7 +1,7 @@
-# disk-benchmark
-A Benchmark and Simulation program to test Hard Drives, SSD Drives, HBAs, RAID Adapters &amp; Storage Controllers
+# Illumine IT disk-benchmark
+A very light Benchmark and Simulation console program to test Hard Drives, SSD Drives, SAN Disks, HBAs, RAID Adapters &amp; Storage Controllers
 
-Works for any Linux, POSIX or even MS DOs or Windows system as long as there is a C compiler!
+Works for any Linux, POSIX or even MS DOS or Windows system as long as there is a C compiler!
 
 With a single command line tool, you can evaluate the disk performance of you application scenario!
 
@@ -17,7 +17,7 @@ Benefit from this extremely simple tool by:
 .... all those from a simple opensource application of 650 lines of basic and very simple C code!
 
 
-##[Download it here](https://github.com/illumine/disk-benchmark/blob/master/bin/disk-benchmark.zip)
+**[Download it here](https://github.com/illumine/disk-benchmark/blob/master/bin/disk-benchmark.zip)**
 ```
 Size:	100,975
 	CRC-32:	7D9F5FB6
