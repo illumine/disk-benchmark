@@ -337,7 +337,7 @@ Size:	100,975
 ```
 
 ## Author
-Michael Mountrakis mountrakis.AT.gmail.com
+Michael Mountrakis mike.mountrakis.AT.gmail.com
 
 Version 1  - linux only - April 2021
 
